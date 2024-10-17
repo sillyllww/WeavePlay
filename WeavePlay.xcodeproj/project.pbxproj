@@ -18,6 +18,7 @@
 		FD447F0B2C4A25DB00235643 /* genimage.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD447F0A2C4A25DB00235643 /* genimage.swift */; };
 		FD7001202C4B609A00F4D3D3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD70011F2C4B609A00F4D3D3 /* AppDelegate.swift */; };
 		FD7802C92C48B3FB006E576D /* GenerateName.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD7802C82C48B3FB006E576D /* GenerateName.swift */; };
+		FD798EEA2CC0C760004B2442 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = FD798EE92CC0C760004B2442 /* Lottie */; };
 		FD86F49A2C42B8F200C9CDA4 /* WeavePlayApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD86F4992C42B8F200C9CDA4 /* WeavePlayApp.swift */; };
 		FD86F49C2C42B8F200C9CDA4 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD86F49B2C42B8F200C9CDA4 /* ContentView.swift */; };
 		FD86F49E2C42B8F400C9CDA4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FD86F49D2C42B8F400C9CDA4 /* Assets.xcassets */; };
@@ -100,6 +101,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FD798EEA2CC0C760004B2442 /* Lottie in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -211,6 +213,7 @@
 			);
 			name = WeavePlay;
 			packageProductDependencies = (
+				FD798EE92CC0C760004B2442 /* Lottie */,
 			);
 			productName = WeavePlay;
 			productReference = FD86F4962C42B8F200C9CDA4 /* WeavePlay.app */;
@@ -242,6 +245,8 @@
 			);
 			mainGroup = FD86F48D2C42B8F200C9CDA4;
 			packageReferences = (
+				FD798EE82CC0C760004B2442 /* XCRemoteSwiftPackageReference "lottie-spm" */,
+				FD798EEB2CC0D79B004B2442 /* XCRemoteSwiftPackageReference "lottie-ios" */,
 			);
 			productRefGroup = FD86F4972C42B8F200C9CDA4 /* Products */;
 			projectDirPath = "";
@@ -548,6 +553,33 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		FD798EE82CC0C760004B2442 /* XCRemoteSwiftPackageReference "lottie-spm" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/airbnb/lottie-spm.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.5.0;
+			};
+		};
+		FD798EEB2CC0D79B004B2442 /* XCRemoteSwiftPackageReference "lottie-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/airbnb/lottie-ios.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.5.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		FD798EE92CC0C760004B2442 /* Lottie */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FD798EE82CC0C760004B2442 /* XCRemoteSwiftPackageReference "lottie-spm" */;
+			productName = Lottie;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = FD86F48E2C42B8F200C9CDA4 /* Project object */;
 }
