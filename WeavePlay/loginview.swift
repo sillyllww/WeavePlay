@@ -22,7 +22,6 @@ struct LoginView: View {
     @State private var isupload:Bool = false
     var body: some View {
          NavigationStack {
-             
              ZStack{
                  Image("back_image")
                      .resizable()

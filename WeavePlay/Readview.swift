@@ -195,9 +195,7 @@ struct Readview: View {
                     if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
                         windowScene.windows.first?.rootViewController?.setNeedsUpdateOfSupportedInterfaceOrientations()
                     }
-
                 }
-
             }
             .tabViewStyle(PageTabViewStyle())
             .ignoresSafeArea() // Ignore safe area for the TabView
@@ -236,6 +234,17 @@ struct CharacterDialogView: View {
     @Binding var showDetails :Bool
     @State private var isAnimating = false
     @Binding var finished :Bool
+    @State private var showpick : Bool = false //收集节目
+    @State private var showshake : Bool = false //传感器互动节目
+    @State private var isshowpick : Bool = false //收集节目
+    @State private var isshowshake : Bool = false //传感器互动节目
+    @State private var buttonPositions: [(x: CGFloat, y: CGFloat)] = [
+        (400, 80), (480, 180), (150, 220), (370, 200), (100, 120)
+    ]
+    @State private var collectedCount = 0
+    @State private var showpickAlert = false
+    @StateObject private var shakeDetector = ShakeDetector()
+        
     let synthesizer = AVSpeechSynthesizer()
 
     var body: some View {
@@ -311,20 +320,24 @@ struct CharacterDialogView: View {
                                 let utterance = AVSpeechUtterance(string: matchedPlot.dialog[currentIndex])
                                 utterance.rate = AVSpeechUtteranceDefaultSpeechRate
                                 utterance.voice = AVSpeechSynthesisVoice(identifier: "com.apple.ttsbundle.siri_Yu-shu_zh-CN_compact")
-                                synthesizer.speak(utterance)
+                                
                                 
                                 withAnimation(.spring(response: 0.3, dampingFraction: 0.3, blendDuration: 0.2)) {
                                     isAnimating.toggle()
                                 }
                                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                                     withAnimation(.easeInOut(duration: 1.0)) {
-                                        showDetails = true
+                                        showDetails.toggle()
+                                        if showDetails{
+                                            synthesizer.speak(utterance)//如果显示人物特写才会说话
+                                        }
                                     }
                                     
                                     withAnimation(.spring(response: 0.3, dampingFraction: 0.3, blendDuration: 0.2)) {
                                         isAnimating.toggle()
                                     }
                                 }
+                                
                             }) {
                                 if showImage {
                                     ZStack {
@@ -449,53 +462,104 @@ struct CharacterDialogView: View {
 
                             }
                             Spacer()
-                            Button(action: {
-                                showDetails = false
-                                showImage = false
-                                if let matchedPlot = selectedStory?.plots.plots.first(where: { $0.location == location }) {
-                                    if let nextPlot = selectedStory?.plots.plots.first(where: { $0.location[1] == location[1] + 1 }) {
-                                        if currentIndex == matchedPlot.characters.count - 1 {
-                                            if nextPlot.isturn.indices.contains(0) {
-                                                let value = nextPlot.isturn[0]
-                                                if value >= 1 {
-                                                    showselect = true
+                            if !showshake && !showpick {
+                                Button(action: {
+                                    showDetails = false
+                                    showImage = false
+                                    if let matchedPlot = selectedStory?.plots.plots.first(where: { $0.location == location }) {
+                                        if let nextPlot = selectedStory?.plots.plots.first(where: { $0.location[1] == location[1] + 1 }) {
+                                            if currentIndex == matchedPlot.characters.count - 1 {
+                                                if nextPlot.isturn.indices.contains(0) {
+                                                    let value = nextPlot.isturn[0]
+                                                    if value >= 1 {
+                                                        showselect = true
+                                                    }
+                                                } else {
+                                                    if location[1] == 6 {
+                                                        finished = true
+                                                        DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
+                                                            
+                                                            finished = false
+                                                            location = [1,1]
+                                                            backTOchildren = true
+                                                        }
+                                                    }
+                                                    if location[1] == 2{
+                                                        isshowpick = true
+                                                        showpick = true
+                                                    }
+                                                    if location[1] == 3{
+                                                        isshowshake = true
+                                                        showshake = true
+                                                    }
+                                                    if !isshowpick{
+                                                        location[1] += 1
+                                                        currentIndex = 0
+                                                    }
+
                                                 }
                                             } else {
-                                                if location[1] == 6 {
-                                                    finished = true
-                                                    DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
-                                                        
-                                                        finished = false
-                                                        location = [1,1]
-                                                        backTOchildren = true
-                                                    }
-                                                }
-                                                location[1] += 1
-                                                currentIndex = 0
+                                                currentIndex = (currentIndex + 1) % matchedPlot.characters.count
                                             }
                                         } else {
-                                            currentIndex = (currentIndex + 1) % matchedPlot.characters.count
-                                        }
-                                    } else {
-                                        finished = true
-                                        DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
-                                            
-                                            finished = false
-                                            location = [1,1]
-                                            backTOchildren = true
+                                            finished = true
+                                            DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
+                                                
+                                                finished = false
+                                                location = [1,1]
+                                                backTOchildren = true
+                                            }
                                         }
                                     }
+                                    withAnimation(.easeInOut(duration: 3.0)) {
+                                        showImage = true
+                                    }
+                                }) {
+                                    Image("next_btn")
+                                        .padding(20)
                                 }
-                                withAnimation(.easeInOut(duration: 3.0)) {
-                                    showImage = true
-                                }
-                            }) {
-                                Image("next_btn")
-                                    .padding(20)
+           
                             }
-       
+
                         }
                     }
+                    if showpick{
+                        VStack{
+                            Spacer()
+                            Text("请帮助主角收集画面中的蝴蝶")
+                                .padding(.bottom,30)
+                        }
+                    }
+                    if showshake{
+                        VStack{
+                            Spacer()
+                            Text("请晃动手机帮主角脱困")
+                                .padding(.bottom,30)
+                        }
+                        if shakeDetector.isShaken {
+                            Text("Device shaken!")
+                                .onAppear(){
+                                    location[1] += 1
+                                    showshake = false
+                                    isshowshake = false
+                                }
+                        }
+                    }
+                    if isshowpick {
+                        ForEach(0..<buttonPositions.count, id: \.self) { index in
+                            Button(action: {
+                            moveButtonToOrigin(index: index)
+                            }) {
+                                Text("蝴蝶 \(index + 1)")
+                                    .padding()
+                                    .background(Color.blue)
+                                    .foregroundColor(.white)
+                                    .cornerRadius(10)
+                            }
+                            .position(x: buttonPositions[index].x, y: buttonPositions[index].y)
+                        }
+                    }
+  
                 }
                 .frame(width: viewSize.width,height: viewSize.height)
                 .onAppear {
@@ -510,9 +574,20 @@ struct CharacterDialogView: View {
             }
         }
     }
+    private func moveButtonToOrigin(index: Int) {
+            // 将按钮移动到 (0, 0) 位置
+            buttonPositions[index] = (700, 0)
+            collectedCount += 1
+
+            // 检查是否所有按钮都已收集
+            if collectedCount == buttonPositions.count {
+                showpickAlert = true
+                showpick = false
+                isshowpick = false
+                location[1] += 1
+            }
+        }
 }
-
-
 struct SizePreferenceKey: PreferenceKey {
     static var defaultValue: CGSize = .zero
     static func reduce(value: inout CGSize, nextValue: () -> CGSize) {

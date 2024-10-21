@@ -11,6 +11,7 @@
 		FD031CA62C85F2E600C6CDF6 /* loginview.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD031CA52C85F2E600C6CDF6 /* loginview.swift */; };
 		FD1F80B92C771D780051A70D /* deleteBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD1F80B82C771D780051A70D /* deleteBackground.swift */; };
 		FD20BD8E2C833A940083CBDB /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = FD20BD8A2C8332ED0083CBDB /* Localizable.strings */; };
+		FD21DB182CC551C000066253 /* shake.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD21DB172CC551BA00066253 /* shake.swift */; };
 		FD315BE32C4FDF1600F16D4F /* parentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD315BE22C4FDF1600F16D4F /* parentView.swift */; };
 		FD3626652C871F45008B92AB /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD3626642C871F45008B92AB /* OnboardingView.swift */; };
 		FD3626672C8736FD008B92AB /* ChildrenOrParent.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD3626662C8736FD008B92AB /* ChildrenOrParent.swift */; };
@@ -57,6 +58,7 @@
 		FD1F80B82C771D780051A70D /* deleteBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = deleteBackground.swift; sourceTree = "<group>"; };
 		FD20BD8B2C8332ED0083CBDB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		FD20BD8D2C8333270083CBDB /* zh */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = zh; path = zh.lproj/Localizable.strings; sourceTree = "<group>"; };
+		FD21DB172CC551BA00066253 /* shake.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = shake.swift; sourceTree = "<group>"; };
 		FD315BE22C4FDF1600F16D4F /* parentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = parentView.swift; sourceTree = "<group>"; };
 		FD3626642C871F45008B92AB /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		FD3626662C8736FD008B92AB /* ChildrenOrParent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChildrenOrParent.swift; sourceTree = "<group>"; };
@@ -190,6 +192,7 @@
 			isa = PBXGroup;
 			children = (
 				FDFF4D8A2C76E39C0057A150 /* ImageGenerator.swift */,
+				FD21DB172CC551BA00066253 /* shake.swift */,
 				FDFF4D8D2C76FAE10057A150 /* imageTestView.swift */,
 				FD1F80B82C771D780051A70D /* deleteBackground.swift */,
 			);
@@ -288,6 +291,7 @@
 				FD7001202C4B609A00F4D3D3 /* AppDelegate.swift in Sources */,
 				FD86F49C2C42B8F200C9CDA4 /* ContentView.swift in Sources */,
 				FDAF59702C44E61B00C3C02D /* test.swift in Sources */,
+				FD21DB182CC551C000066253 /* shake.swift in Sources */,
 				FD86F4AA2C42BCB100C9CDA4 /* CreateView.swift in Sources */,
 				FD3626672C8736FD008B92AB /* ChildrenOrParent.swift in Sources */,
 				FD447F092C4A1DCF00235643 /* midjourney.swift in Sources */,
