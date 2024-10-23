@@ -275,7 +275,12 @@ struct CharacterDialogView: View {
 //                                                    utterance.rate = AVSpeechUtteranceDefaultSpeechRate
 //                                                    utterance.voice = AVSpeechSynthesisVoice(identifier: "com.apple.ttsbundle.siri_Yu-shu_zh-CN_compact")
 //                                                    synthesizer.speak(utterance)
-                                                    playSound()
+                                                    if currentIndex == 0{
+                                                        playSound(1)
+                                                    }else{
+                                                        playSound(2)
+                                                    }
+                                                    
                                                 }) {
                                                     Image(systemName: "speaker.wave.2.fill")
                                                         .foregroundColor(.main)
@@ -320,10 +325,10 @@ struct CharacterDialogView: View {
                             }
                             
                             Button(action: {
-                                let utterance = AVSpeechUtterance(string: matchedPlot.dialog[currentIndex])
-                                utterance.rate = AVSpeechUtteranceDefaultSpeechRate
-                                utterance.voice = AVSpeechSynthesisVoice(identifier: "com.apple.ttsbundle.siri_Yu-shu_zh-CN_compact")
-                                
+//                                let utterance = AVSpeechUtterance(string: matchedPlot.dialog[currentIndex])
+//                                utterance.rate = AVSpeechUtteranceDefaultSpeechRate
+//                                utterance.voice = AVSpeechSynthesisVoice(identifier: "com.apple.ttsbundle.siri_Yu-shu_zh-CN_compact")
+//                                
                                 
                                 withAnimation(.spring(response: 0.3, dampingFraction: 0.3, blendDuration: 0.2)) {
                                     isAnimating.toggle()
@@ -332,7 +337,12 @@ struct CharacterDialogView: View {
                                     withAnimation(.easeInOut(duration: 1.0)) {
                                         showDetails.toggle()
                                         if showDetails{
-                                            synthesizer.speak(utterance)//如果显示人物特写才会说话
+                                            //synthesizer.speak(utterance)//如果显示人物特写才会说话
+                                            if currentIndex == 0{
+                                                playSound(1)
+                                            }else{
+                                                playSound(2)
+                                            }
                                         }
                                     }
                                     
@@ -624,9 +634,20 @@ struct CharacterDialogView: View {
 
             }
         }
-    func playSound() {
-        guard let url = URL(string: "https://fc-sd-62aafe39g.oss-cn-hangzhou.aliyuncs.com/audio/1-1-1.mp3") else { return }
-        guard let url = URL(string: "https://fc-sd-62aafe39g.oss-cn-hangzhou.aliyuncs.com/audio/1-1-2.mp3") else { return }
+
+    func playSound(_ option: Int) {
+        let urlString: String
+        
+        switch option {
+        case 1:
+            urlString = "https://fc-sd-62aafe39g.oss-cn-hangzhou.aliyuncs.com/audio/1-1-1.mp3"
+        case 2:
+            urlString = "https://fc-sd-62aafe39g.oss-cn-hangzhou.aliyuncs.com/audio/1-1-2.mp3"
+        default:
+            return
+        }
+        
+        guard let url = URL(string: urlString) else { return }
         player = AVPlayer(url: url)
         player?.play()
     }
