@@ -196,6 +196,7 @@ struct Readview: View {
                     if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
                         windowScene.windows.first?.rootViewController?.setNeedsUpdateOfSupportedInterfaceOrientations()
                     }
+                    resetValues()
                 }
             }
             .tabViewStyle(PageTabViewStyle())
@@ -219,6 +220,14 @@ struct Readview: View {
             }
         }
         
+    }
+    func resetValues() {
+        location = [1, 1]
+        startdialog = false
+        showbottom  = false
+        navigateToMainView = false
+        showDetails = false
+        finished = false
     }
 }
 
@@ -408,35 +417,38 @@ struct CharacterDialogView: View {
                     .frame(width: viewSize.width,height: viewSize.height)
                     if showselect {
                         ZStack {
-                            RoundedRectangle(cornerRadius: 30)
-                                .frame(width: 390, height: 250)
-                                .foregroundColor(.main)
-                                .blur(radius: 30)
-                            
-                            RoundedRectangle(cornerRadius: 30)
-                                .frame(width: 320, height: 180)
-                                .foregroundColor(.clear)
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 30)
-                                        .stroke(Color.white, lineWidth: 3)
-                                )
+                            Image("read_select")
+       
                             VStack {
                                 HStack {
-                                    Image("?")
-                                        .scaleEffect(0.5)
-                                    Text("故事接下来该怎么发展")
-                                        .font(.title2)
-                                        .foregroundStyle(Color.white)
+                                    Text("公主接下来要去哪里呢")
+                                        .font(.system(size: 15))
+                                        .foregroundStyle(Color.main)
+                                        .fontWeight(.bold)
                                 }
                                 Button(action: {
                                     location[1] += 1
                                     showselect = false
                                 }) {
-                                    Text("方向一")
-                                        .frame(width: 178, height: 41)
-                                        .background(Color.sub)
-                                        .foregroundColor(Color.white)
-                                        .cornerRadius(20)
+                                    ZStack{
+                                        RoundedRectangle(cornerRadius: 50) // 可以替换为其他视图
+                                            .fill(Color.sub)
+                                                   .frame(width: 130, height: 30)
+                                                   .overlay(
+                                                    RoundedRectangle(cornerRadius: 50)
+                                                           .stroke(Color.black.opacity(0.1), lineWidth: 10) // 外轮廓阴影
+                                                           .blur(radius: 5) // 模糊效果
+                                                           .mask(RoundedRectangle(cornerRadius: 50).fill(Color.black)) // 仅在内部区域应用阴影
+                                                   )
+                                                   .shadow(color: Color.black.opacity(0.3), radius: 10, x: 0, y: 0) // 外部阴影
+                                        Text("去城堡")
+                                            .font(.caption)
+                                            .fontWeight(.bold)
+                                            .foregroundColor(Color.white)
+                                            .cornerRadius(20)
+                                    }
+                                    .padding(10)
+        
                                 }
                                 Button(action: {
                                     if let nextPlot = selectedStory?.plots.plots.first(where: { $0.location[1] == location[1] + 1 }) {
@@ -446,11 +458,23 @@ struct CharacterDialogView: View {
                                     location[1] += 1
                                     showselect = false
                                 }) {
-                                    Text("方向二")
-                                        .frame(width: 178, height: 41)
-                                        .background(Color.sub)
-                                        .foregroundColor(Color.white)
-                                        .cornerRadius(20)
+                                    ZStack{
+                                        RoundedRectangle(cornerRadius: 50) // 可以替换为其他视图
+                                            .fill(Color.sub)
+                                                   .frame(width: 130, height: 30)
+                                                   .overlay(
+                                                    RoundedRectangle(cornerRadius: 50)
+                                                           .stroke(Color.black.opacity(0.1), lineWidth: 10) // 外轮廓阴影
+                                                           .blur(radius: 5) // 模糊效果
+                                                           .mask(RoundedRectangle(cornerRadius: 50).fill(Color.black)) // 仅在内部区域应用阴影
+                                                   )
+                                                   .shadow(color: Color.black.opacity(0.3), radius: 10, x: 0, y: 0) // 外部阴影
+                                        Text("去森林")
+                                            .font(.caption)
+                                            .fontWeight(.bold)
+                                            .foregroundColor(Color.white)
+                                            .cornerRadius(20)
+                                    }
                                 }
                             }
                         }
@@ -611,16 +635,27 @@ struct CharacterDialogView: View {
                     if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
                         windowScene.windows.first?.rootViewController?.setNeedsUpdateOfSupportedInterfaceOrientations()
                     }
+                    resetValues()
                 }
+                
 
             }
         }
+    }
+    func resetValues() {
+        buttonPositions = [
+            (400, 80), (480, 180), (150, 220), (370, 200), (100, 120)
+        ]
+        showpick = false //收集节目
+        showshake  = false //传感器互动节目
+        isshowpick = false //收集节目
+        isshowshake = false //传感器互动节目
+        collectedCount = 0
     }
     private func moveButtonToOrigin(index: Int) {
             // 将按钮移动到 (0, 0) 位置
             buttonPositions[index] = (700, 0)
             collectedCount += 1
-
             // 检查是否所有按钮都已收集
             if collectedCount == buttonPositions.count {
                 showpickAlert = true
