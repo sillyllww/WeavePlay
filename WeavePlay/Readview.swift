@@ -8,6 +8,7 @@
 import SwiftUI
 import UIKit
 import AVFoundation
+import AVKit
 
 struct Readview: View {
     @State private var viewSize: CGSize = .zero
@@ -222,6 +223,7 @@ struct Readview: View {
 }
 
 struct CharacterDialogView: View {
+    @State private var player: AVPlayer?
     @State private var viewSize: CGSize = .zero
     @Binding var location: [Int]  // 使用 @Binding 绑定 location
     @State private var currentIndex: Int = 0
@@ -269,10 +271,11 @@ struct CharacterDialogView: View {
                                                 
                                                 Spacer()
                                                 Button(action: {
-                                                    let utterance = AVSpeechUtterance(string: matchedPlot.dialog[currentIndex])
-                                                    utterance.rate = AVSpeechUtteranceDefaultSpeechRate
-                                                    utterance.voice = AVSpeechSynthesisVoice(identifier: "com.apple.ttsbundle.siri_Yu-shu_zh-CN_compact")
-                                                    synthesizer.speak(utterance)
+//                                                    let utterance = AVSpeechUtterance(string: matchedPlot.dialog[currentIndex])
+//                                                    utterance.rate = AVSpeechUtteranceDefaultSpeechRate
+//                                                    utterance.voice = AVSpeechSynthesisVoice(identifier: "com.apple.ttsbundle.siri_Yu-shu_zh-CN_compact")
+//                                                    synthesizer.speak(utterance)
+                                                    playSound()
                                                 }) {
                                                     Image(systemName: "speaker.wave.2.fill")
                                                         .foregroundColor(.main)
@@ -492,7 +495,7 @@ struct CharacterDialogView: View {
                                                         isshowshake = true
                                                         showshake = true
                                                     }
-                                                    if !isshowpick{
+                                                    if !isshowpick && !isshowshake{
                                                         location[1] += 1
                                                         currentIndex = 0
                                                     }
@@ -539,9 +542,14 @@ struct CharacterDialogView: View {
                         if shakeDetector.isShaken {
                             Text("Device shaken!")
                                 .onAppear(){
-                                    location[1] += 1
-                                    showshake = false
-                                    isshowshake = false
+                                    showpickAlert = true
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
+                                        location[1] += 1
+                                        showshake = false
+                                        isshowshake = false
+                                        showpickAlert  = false
+                                    }
+
                                 }
                         }
                     }
@@ -558,6 +566,30 @@ struct CharacterDialogView: View {
                             }
                             .position(x: buttonPositions[index].x, y: buttonPositions[index].y)
                         }
+                    }
+                    if showpickAlert{
+                        ZStack{
+                            Color.black.opacity(0.5) // 背景变暗
+                                .edgesIgnoringSafeArea(.all)
+                            VStack{
+                                if location[1] == 2{
+                                    Text("成功帮主角收集蝴蝶✌️")
+                                        .font(.title2)
+                                        .foregroundStyle(Color.white)
+                                }else{
+                                    Text("成功帮主角脱困")
+                                        .font(.title2)
+                                        .foregroundStyle(Color.white)
+                                }
+                            }
+                            .frame(width: 500,height: 200)
+                            .background(.white)
+                            .opacity(0.7)
+                            .cornerRadius(50)
+                            LottieView(animationName: "Animation - 1726121039757", loopMode: .loop, animationSpeed: 0.5)
+                                .offset(x:70)
+                        }
+
                     }
   
                 }
@@ -582,11 +614,22 @@ struct CharacterDialogView: View {
             // 检查是否所有按钮都已收集
             if collectedCount == buttonPositions.count {
                 showpickAlert = true
-                showpick = false
-                isshowpick = false
-                location[1] += 1
+                DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
+                    showpickAlert = true
+                    showpick = false
+                    isshowpick = false
+                    location[1] += 1
+                    showpickAlert = false
+                }
+
             }
         }
+    func playSound() {
+        guard let url = URL(string: "https://fc-sd-62aafe39g.oss-cn-hangzhou.aliyuncs.com/audio/1-1-1.mp3") else { return }
+        guard let url = URL(string: "https://fc-sd-62aafe39g.oss-cn-hangzhou.aliyuncs.com/audio/1-1-2.mp3") else { return }
+        player = AVPlayer(url: url)
+        player?.play()
+    }
 }
 struct SizePreferenceKey: PreferenceKey {
     static var defaultValue: CGSize = .zero
