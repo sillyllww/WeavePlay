@@ -16,7 +16,7 @@ struct HomeView: View {
     @State private var stories = Stories.load() // 管理多个故事
     @State private var newStory: Story? = nil // 新故事
     @State private var tosdView: Bool = false
-   
+    @State private var showparentview = false
     @State private var height = UIScreen.main.bounds.height
     @State private var width = UIScreen.main.bounds.width
     var body: some View {
@@ -141,7 +141,8 @@ struct HomeView: View {
                                Spacer()
                                 HStack {
                                     Button(action: {
-                                        maintopic = true
+                                        
+                                        showparentview = true
                                     }) {
                                         ZStack {
                                             RoundedRectangle(cornerRadius: 30)
@@ -154,7 +155,7 @@ struct HomeView: View {
                                                     .foregroundColor(.white)
                                                     .font(.system(size: 20))
                                                 Image("change_parent")
-                                                    .padding(.trailing, 2)
+                                                    .padding(.trailing, 10)
                                             }
                                         }
                                         
@@ -245,7 +246,74 @@ struct HomeView: View {
                                     }
                                     .padding() // 在 HStack 周围添加内边距
                         }.padding(.top,120)
-                       
+                        if showparentview{
+                            ZStack {
+                                Color.black.opacity(0.5) // 背景变暗
+                                    .edgesIgnoringSafeArea(.all)
+                                    .onTapGesture {
+                                        showparentview = false
+                                    }
+                                Image("read_select")
+           
+                                VStack {
+                                    HStack {
+                                        Text("您是否要切换为家长模式")
+                                            .font(.system(size: 15))
+                                            .foregroundStyle(Color.main)
+                                            .fontWeight(.bold)
+                                    }
+                                    .padding()
+                                    HStack{
+                                        Button(action: {
+                                            maintopic = true
+                                            
+                                        }) {
+                                            ZStack{
+                                                RoundedRectangle(cornerRadius: 50) // 可以替换为其他视图
+                                                    .fill(Color.sub)
+                                                           .frame(width: 90, height: 30)
+                                                           .overlay(
+                                                            RoundedRectangle(cornerRadius: 50)
+                                                                   .stroke(Color.black.opacity(0.1), lineWidth: 10) // 外轮廓阴影
+                                                                   .blur(radius: 5) // 模糊效果
+                                                                   .mask(RoundedRectangle(cornerRadius: 50).fill(Color.black)) // 仅在内部区域应用阴影
+                                                           )
+                                                           .shadow(color: Color.black.opacity(0.3), radius: 10, x: 0, y: 0) // 外部阴影
+                                                Text("确定")
+                                                    .font(.caption)
+                                                    .fontWeight(.bold)
+                                                    .foregroundColor(Color.white)
+                                                    .cornerRadius(20)
+                                            }
+                                        }
+                                        Button(action: {
+                                            showparentview = false
+           
+                                        }) {
+                                            ZStack{
+                                                RoundedRectangle(cornerRadius: 50) // 可以替换为其他视图
+                                                    .fill(Color.sub)
+                                                           .frame(width: 90, height: 30)
+                                                           .overlay(
+                                                            RoundedRectangle(cornerRadius: 50)
+                                                                   .stroke(Color.black.opacity(0.1), lineWidth: 10) // 外轮廓阴影
+                                                                   .blur(radius: 5) // 模糊效果
+                                                                   .mask(RoundedRectangle(cornerRadius: 50).fill(Color.black)) // 仅在内部区域应用阴影
+                                                           )
+                                                           .shadow(color: Color.black.opacity(0.3), radius: 10, x: 0, y: 0) // 外部阴影
+                                                Text("取消")
+                                                    .font(.caption)
+                                                    .fontWeight(.bold)
+                                                    .foregroundColor(Color.white)
+                                                    .cornerRadius(20)
+                                            }
+                                        }
+                                    }
+                                    
+                                }
+                            }//切换家长弹窗
+                        }
+
 //                        ScrollView {
 //                            VStack {
 //                                Spacer(minLength: 80)

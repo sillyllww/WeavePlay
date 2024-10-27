@@ -49,51 +49,40 @@ struct RoundedRectangleShape: Shape {
 
     func path(in rect: CGRect) -> Path {
         var path = Path()
-
         // 移动到矩形的左上角，准备开始绘制
         path.move(to: CGPoint(x: rect.minX + cornerRadius-backzero, y: rect.minY))
-        
         path.addLine(to: CGPoint(x: rect.minX + cornerRadius + loc - cornerRadius, y: rect.minY))
         path.addQuadCurve(to: CGPoint(x: rect.minX + cornerRadius + loc-backzero, y: rect.minY - cornerRadius),
                           control: CGPoint(x: rect.minX + cornerRadius + loc-backzero, y: rect.minY))
-        
         path.addLine(to: CGPoint(x: rect.minX + cornerRadius + loc-backzero, y: rect.minY - 40 + cornerRadius))
         path.addQuadCurve(to: CGPoint(x: rect.minX + cornerRadius + loc + cornerRadius-backzero, y: rect.minY - 40),
                           control: CGPoint(x: rect.minX + cornerRadius + loc-backzero, y: rect.minY - 40))
-        
         path.addLine(to: CGPoint(x: rect.minX + cornerRadius + loc + long - cornerRadius, y: rect.minY - 40))
         path.addQuadCurve(to: CGPoint(x: rect.minX + cornerRadius + loc + long, y: rect.minY - 40 + cornerRadius),
                           control: CGPoint(x: rect.minX + cornerRadius + loc + long, y: rect.minY - 40))
-        
         path.addLine(to: CGPoint(x: rect.minX + cornerRadius + loc + long, y: rect.minY - cornerRadius))
         path.addQuadCurve(to: CGPoint(x: rect.minX + cornerRadius + loc + long + cornerRadius, y: rect.minY),
                           control: CGPoint(x: rect.minX + cornerRadius + loc + long, y: rect.minY))
-
         // 画上边，从左上角到右上角
         path.addLine(to: CGPoint(x: rect.maxX - cornerRadius, y: rect.minY))
-        
         // 绘制右上角圆角
         path.addQuadCurve(to: CGPoint(x: rect.maxX, y: rect.minY + cornerRadius),
                           control: CGPoint(x: rect.maxX, y: rect.minY))
-
         // 画右边，从右上角到右下角
         path.addLine(to: CGPoint(x: rect.maxX, y: rect.maxY - cornerRadius))
         // 绘制右下角圆角
         path.addQuadCurve(to: CGPoint(x: rect.maxX - cornerRadius, y: rect.maxY),
                           control: CGPoint(x: rect.maxX, y: rect.maxY))
-
         // 画下边，从右下角到左下角
         path.addLine(to: CGPoint(x: rect.minX + cornerRadius, y: rect.maxY))
         // 绘制左下角圆角
         path.addQuadCurve(to: CGPoint(x: rect.minX, y: rect.maxY - cornerRadius),
                           control: CGPoint(x: rect.minX, y: rect.maxY))
-
         // 画左边，从左下角到左上角
         path.addLine(to: CGPoint(x: rect.minX, y: rect.minY + cornerRadius))
         // 绘制左上角圆角
         path.addQuadCurve(to: CGPoint(x: rect.minX + cornerRadius-backzero, y: rect.minY),
                           control: CGPoint(x: rect.minX, y: rect.minY))
-
         return path
     }
 }

@@ -495,8 +495,6 @@ struct CharacterDialogView: View {
                                         .scaleEffect(x: -1, y: 1, anchor: .center)
                                         .padding(20)
                                 }
-                               
-
                             }
                             Spacer()
                             if !showshake && !showpick {
@@ -669,7 +667,6 @@ struct CharacterDialogView: View {
 
             }
         }
-
     func playSound(_ option: Int) {
         let urlString: String
         

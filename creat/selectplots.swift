@@ -51,7 +51,7 @@ struct selectplots: View {
                 .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
                 .ignoresSafeArea(.all)
             VStack {
-                Spacer()
+               
                 HStack {
                     ForEach(1...6, id: \.self) { value in
                         let isDisabled = isButtonDisabled(value: value)
@@ -67,24 +67,28 @@ struct selectplots: View {
                         .disabled(isDisabled)
                     }
                 }
-                .padding(5)
+                .padding(.top,60)
                 ZStack{
+                    Image("plots_show")
+                        .scaleEffect(0.97)
                     VStack{
                         
                         if !showgen{
                             if let index = selectedStory!.plots.plots.firstIndex(where: { $0.location == selectedMarker }) {
                                 Text(text[(selectedStory?.plots.plots[index].location[1])!-1])
                                     .font(.title3)
-                                    .padding(.top)
-                                    .foregroundColor(.white)
+                                    .padding(.top,50)
+                                    .foregroundColor(.main)
+                                Spacer()
                                 ScrollView {
                                     VStack(alignment: .leading, spacing: 0) {
                                         if let index2 = selectedStory?.plots.plots[index].plotchoseindex,
                                            let perplot = selectedStory?.plots.plots[index].plotchose[index2].perPlot {
                                             Text(perplot)
                                                 .font(.callout)
-                                                .foregroundColor(.white)
+                                                .foregroundColor(.main)
                                                 .frame(width: 300, alignment: .topLeading) // 设置文本框架的对齐方式为顶端对齐
+                                               
                                                 
                                         } else {
                                           if  let perplot = selectedStory?.plots.plots[index].plotchose[perplotindex].perPlot {
@@ -95,10 +99,13 @@ struct selectplots: View {
                                                   
                                             }
                                         }
-                                        Spacer() // 使用 Spacer 将文本推到顶端
+                                       
                                     }
                                     
-                                }.frame(width: 300, height: 170) // 设置 VStack 的宽高
+                                }.frame(width: 320, height: 150) // 设置 VStack 的宽高
+                                    .padding(.top,-25)
+                                    .padding(.bottom,20)
+                                
                                 HStack{
                                     ForEach(selectedStory!.plots.plots[index].plotchose[perplotindex].perCharacter, id: \.self) { character in
                                         Text(character)
@@ -114,47 +121,53 @@ struct selectplots: View {
                                     }
                                     Spacer()
                                 }
-                                .padding(.leading, 30)
-                                .padding(.bottom,10)
+                                .padding(.leading, 40)
+                                
                             }
                             Spacer()
                         }else{
                             Text("故事内容")
                                 .font(.title3)
-                                .foregroundColor(.white)
+                                .foregroundColor(.main)
+                                .padding(.top,50)
+                            
                             ScrollView {
                                 Text(selectedPerPlot)
                                     .font(.callout)
-                                    .foregroundColor(.white)
+                                    .foregroundColor(.main)
                                     .frame(width: 300, alignment: .topLeading)
-                            }.frame(width: 365, height: 190) // 设置 VStack 的宽高
-                        }
-                    }
-                    VStack{
-                        Spacer()
-                        HStack{
+                            }.frame(width: 365, height: 150) // 设置 VStack 的宽高
                             Spacer()
-                            Image("bear_sit")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 220)
-                                .offset(x: 90,y: 100)
                         }
                     }
+//                    VStack{
+//                        Spacer()
+//                        HStack{
+//                            Spacer()
+//                            Image("bear_sit")
+//                                .resizable()
+//                                .scaledToFit()
+//                                .frame(width: 220)
+//                                .offset(x: 90,y: 100)
+//                        }
+//                    }
+                    
 
                 }
                 .frame(width:UIScreen.main.bounds.width * 0.95,height:UIScreen.main.bounds.height * 0.33)
-                .background(
-                  LinearGradient(
-                    stops: [
-                      Gradient.Stop(color: Color(red: 0.87, green: 0.48, blue: 0.97).opacity(0.8), location: 0.00),
-                      Gradient.Stop(color: Color(red: 0.47, green: 0.32, blue: 0.92), location: 0.74),
-                    ],
-                    startPoint: UnitPoint(x: 0.89, y: -0.04),
-                    endPoint: UnitPoint(x: 0, y: 1.24)
-                  )
-                )
-                .cornerRadius(30)
+                
+                
+//                .background(
+//                  LinearGradient(
+//                    stops: [
+//                      Gradient.Stop(color: Color(red: 0.87, green: 0.48, blue: 0.97).opacity(0.8), location: 0.00),
+//                      Gradient.Stop(color: Color(red: 0.47, green: 0.32, blue: 0.92), location: 0.74),
+//                    ],
+//                    startPoint: UnitPoint(x: 0.89, y: -0.04),
+//                    endPoint: UnitPoint(x: 0, y: 1.24)
+//                  )
+//                )
+//                .cornerRadius(30)
                 .shadow(radius: 10)
                 .onChange(of: needregen) { newValue in
                     if newValue {
@@ -168,15 +181,16 @@ struct selectplots: View {
                         }
                     }
                 }
-                .padding(.bottom,40)
+                .padding(.bottom,50)
                 // 顶部的6个按钮
+              
 
              
                 ZStack{
                     RoundedRectangleShape(cornerRadius: 15, loc: loc, long: 80)
                         .foregroundColor(.light)
                         .padding(5)
-                        .frame(height: 320)    // 设置矩形的尺寸
+                        .frame(width: 379, height: 320)    // 设置矩形的尺寸
                         .opacity(0.8)
                         .shadow(radius: 10)
                     if !showgen{
@@ -184,7 +198,7 @@ struct selectplots: View {
       
                             // 右侧的3个按钮
                             DetailView(selectedMarker: $selectedMarker, selectedStory: $selectedStory, perplotindex: $perplotindex, prePerplotindex: $prePerplotindex, plotComplete: $plotComplete)
-                                .padding(.horizontal,15)
+                                
                                 .transition(.slide) // 添加过渡效果
                                 .onChange(of: selectedMarker) { newValue in
                                     if let index = selectedStory?.plots.plots.firstIndex(where: { $0.location == newValue }) {
@@ -193,7 +207,7 @@ struct selectplots: View {
                                         perplotindex = 0
                                     }
                                 }
-
+                                
                             HStack{
                                 if selectedMarker[0] > 1 {
                                     Button(action: {
@@ -279,7 +293,9 @@ struct selectplots: View {
                                             .padding(.horizontal, value > 1 ? 20 : 10)
                                             
                                     }
-                                    .frame(width: value > 1 ? 60 : 90)
+                                    .frame(width: value > 1 ? 60 : 97
+                                    )
+                                    
                                 }
                                 
                             }

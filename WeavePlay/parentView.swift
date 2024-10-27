@@ -157,19 +157,21 @@ struct MinutePickerView: View {
                            
                            HStack {
                                TextField(NSLocalizedString("请输入您的烦恼", comment: "请输入您的烦恼"), text: $inputText)
-                                   .frame(width: 260, height: 45, alignment: .leading )
-                                   .background(Color.light)
+                                   .padding()
+                                   .frame(width: 270, height: 45)
+                                   .background(Color.white.opacity(0.8))
                                    .cornerRadius(50)
                                    .font(.system(size: 18, weight: .medium, design: .rounded))
-                                   .foregroundColor(.sub)
-                                   
-                                   
+                                   .foregroundColor(.black)
+                                   .contentShape(Rectangle()) // 确保点击区域
+                                   .border(Color.red) // 调试边框
+
                                Button(action: addText) {
                                    Text(NSLocalizedString("添加", comment: "添加"))
                                        .font(.system(size: 18, weight: .medium, design: .rounded))
                                        .foregroundColor(.white)
                                }
-                               .frame(width: 70, height:50)
+                               .frame(width: 70, height: 50)
                                .background(Color.sub)
                                .cornerRadius(50)
                            }
@@ -192,6 +194,7 @@ struct MinutePickerView: View {
                                }
                            }
                            Spacer(minLength: 200)
+                               .background(Color.black)
                        }
                        
 //                       if stories.stories.isEmpty {
@@ -283,14 +286,14 @@ struct MinutePickerView: View {
                                     .shadow(radius: 3)
                                 HStack{
                                     Spacer()
-                                    Image("change_parent")
+                                    Image("change_children")
                                         .resizable()
                                         .scaledToFit()
-                                        .frame(width: 40)
+                                        .frame(width: 28)
                                        
                                     Image(systemName: "repeat")
                                         .foregroundColor(.white)
-                                        .font(.system(size: 20))
+                                        .font(.system(size: 16))
                                         .padding(.trailing,10)
   
             
