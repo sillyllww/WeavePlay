@@ -81,6 +81,7 @@ struct MinutePickerView: View {
     @State private var toLoginView : Bool = false
     @StateObject private var authManager = AuthManager()
     @EnvironmentObject var timerManager: TimerManager
+    @State private var isKeyboardVisible = false
     
     var body: some View {
         GeometryReader { geometry in
@@ -125,10 +126,14 @@ struct MinutePickerView: View {
                                .padding(.horizontal, 20)
                                
                                ZStack {
-                                   Image("children")
-                                       .resizable()
-                                       .scaledToFit()
-                                       .frame(width: geometry.size.width < 768 ? geometry.size.width*0.65 : 400, height: geometry.size.height < 768 ?  geometry.size.width*0.65 : 400)
+                                   LottieView(animationName: "children", loopMode: .playOnce, animationSpeed: 0.5)
+                                       .scaleEffect(2.3)
+                                   if globalSettings.textPositions.isEmpty{
+                                       LottieView(animationName: "words", loopMode: .loop, animationSpeed: 0.5)
+                                           .scaleEffect(1.9)
+                                           .offset(y:-40)
+                                   }
+
                                    ZStack{
                                        ForEach(globalSettings.textPositions) { item in
                                            HStack {
@@ -164,7 +169,7 @@ struct MinutePickerView: View {
                                    .font(.system(size: 18, weight: .medium, design: .rounded))
                                    .foregroundColor(.black)
                                    .contentShape(Rectangle()) // 确保点击区域
-                                   .border(Color.red) // 调试边框
+                            
 
                                Button(action: addText) {
                                    Text(NSLocalizedString("添加", comment: "添加"))
@@ -218,18 +223,48 @@ struct MinutePickerView: View {
 //                       }
                        
                        VStack {
-                           Button(action: {
-                               let topics = globalSettings.textPositions.map { $0.text }
-                               let story = Story(title: NSLocalizedString("未创建", comment: "未创建"), characters: Characters(), scene: "", plots: Plots(), plot1: "", plot2: "", plot3: "", topic: topics, storyintro: NSLocalizedString("小朋友，这个故事还未创建完成哦，点击按钮继续创建故事吧", comment: ""), storyimage: [], main_image: URL(string: "https://fc-sd-62aafe39g.oss-cn-hangzhou.aliyuncs.com/OtherImage/mianimage.png")!, finished: false, allcharacterUrls: [], allcharacters: [])
-                               newStory = story
-                               navigateToCreateView = true
-                           }) {
-                               Image("newstory")
+                           if !isKeyboardVisible {
+                               Button(action: {
+                                   let topics = globalSettings.textPositions.map { $0.text }
+                                   let story = Story(
+                                       title: NSLocalizedString("未创建", comment: "未创建"),
+                                       characters: Characters(),
+                                       scene: "",
+                                       plots: Plots(),
+                                       plot1: "",
+                                       plot2: "",
+                                       plot3: "",
+                                       topic: topics,
+                                       storyintro: NSLocalizedString("小朋友，这个故事还未创建完成哦，点击按钮继续创建故事吧", comment: ""),
+                                       storyimage: [],
+                                       main_image: URL(string: "https://fc-sd-62aafe39g.oss-cn-hangzhou.aliyuncs.com/OtherImage/mianimage.png")!,
+                                       finished: false,
+                                       allcharacterUrls: [],
+                                       allcharacters: []
+                                   )
+                                   newStory = story
+                                   navigateToCreateView = true
+                               }) {
+                                   Image("newstory")
+                               }
+                               .padding(20)
                            }
-                           .padding(20)
-                           
                        }
                        .frame(width: geometry.size.width, height: geometry.size.height, alignment: .bottomTrailing)
+                       .onAppear {
+                           // 监听键盘显示和隐藏通知
+                           NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillShowNotification, object: nil, queue: .main) { _ in
+                               isKeyboardVisible = true
+                           }
+                           NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillHideNotification, object: nil, queue: .main) { _ in
+                               isKeyboardVisible = false
+                           }
+                       }
+                       .onDisappear {
+                           // 移除通知观察者
+                           NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+                           NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
+                       }
                    }
                    .onAppear {
                        width = geometry.size.width
