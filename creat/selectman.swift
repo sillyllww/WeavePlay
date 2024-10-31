@@ -312,18 +312,20 @@ struct CharacterView: View {
                     .fill(Color(red: 173/255, green: 179/255, blue: 255/255))
                     .frame(width: 143, height: 143)
                     .offset(x: -30, y: 50) // 偏移图片的位置
+                Ellipse()
+                    .fill(Color(red: 229/255, green: 230/255, blue: 255/255))
+                    .frame(width: 130, height: 130)
+                    .offset(x: 60, y: -110) // 偏移图片的位置
                 Image("category\(character.classnum)")
                     .resizable()
                     .frame(width: 150, height: 150)
                     .offset(x: 0, y: 20) // 偏移图片的位置
-                RoundedRectangle(cornerRadius: 10)
-                    .fill(Color(red: 229/255, green: 230/255, blue: 255/255))
-                    .frame(width: 100, height: 20)
-                    .offset(x: 40, y: -65) // 偏移图片的位置
+
+   
                 Text(character.name)
                     .font(.headline)
-                    .foregroundColor(.main)
-                    .offset(x: 35, y: -65)
+                    .foregroundColor(.white)
+                    .offset(x: 42, y: -73)
             }
             .frame(maxWidth: 150, minHeight: 180)
             .background(Color.white)
@@ -343,9 +345,9 @@ struct CharacterView: View {
         Button(action: {
             deleteAction()
         }) {
-            Image(systemName: "trash.circle")
-                .font(.system(size: 30))
-                .offset(x: -10, y: 1) // 偏移图片的位置
+            Image("chara_delete_btn")
+                
+               .offset(x: 5, y: 13) // 偏移图片的位置
                 .foregroundColor(.main)
                 .padding(5)
         }

@@ -2,7 +2,7 @@ import Foundation
 import UIKit
 
 // 声明全局常量
-let endpoint = "http://sd-abfda2--sd.fcv3.1073623476239213.cn-hangzhou.fc.devsapp.net"
+let endpoint = "https://www.weaveplay.cn"
 let username = "sillyll"
 let password = "123"
 

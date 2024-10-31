@@ -38,6 +38,7 @@
 		FDAF596E2C44E55C00C3C02D /* openai.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDAF596D2C44E55C00C3C02D /* openai.swift */; };
 		FDAF59702C44E61B00C3C02D /* test.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDAF596F2C44E61B00C3C02D /* test.swift */; };
 		FDAF59722C4567E400C3C02D /* selectplot.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDAF59712C4567E400C3C02D /* selectplot.swift */; };
+		FDB783902CCE91980011ADAC /* word.json in Resources */ = {isa = PBXBuildFile; fileRef = FDB7838F2CCE91980011ADAC /* word.json */; };
 		FDC310672C56459C00C26913 /* bodydetaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDC310662C56459C00C26913 /* bodydetaction.swift */; };
 		FDC39C1F2C79AD1F00D6E3C5 /* selectplots.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDC39C1E2C79AD1F00D6E3C5 /* selectplots.swift */; };
 		FDC6CF3D2C4D16B200EE8460 /* Readview.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDC6CF3C2C4D16B100EE8460 /* Readview.swift */; };
@@ -48,7 +49,6 @@
 		FDF026FE2C92C6E0002D5AF1 /* Animation - 1726121039757.json in Resources */ = {isa = PBXBuildFile; fileRef = FDF026FB2C92C6E0002D5AF1 /* Animation - 1726121039757.json */; };
 		FDF027002C92CF2C002D5AF1 /* Animation - 1726122467044.json in Resources */ = {isa = PBXBuildFile; fileRef = FDF026FF2C92CF2B002D5AF1 /* Animation - 1726122467044.json */; };
 		FDFDA4082CCE378A0007AA78 /* children.json in Resources */ = {isa = PBXBuildFile; fileRef = FDFDA4072CCE378A0007AA78 /* children.json */; };
-		FDFDA40A2CCE777B0007AA78 /* words.json in Resources */ = {isa = PBXBuildFile; fileRef = FDFDA4092CCE777B0007AA78 /* words.json */; };
 		FDFF4D8B2C76E39C0057A150 /* ImageGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDFF4D8A2C76E39C0057A150 /* ImageGenerator.swift */; };
 		FDFF4D8E2C76FAE10057A150 /* imageTestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDFF4D8D2C76FAE10057A150 /* imageTestView.swift */; };
 /* End PBXBuildFile section */
@@ -87,6 +87,7 @@
 		FDAF596D2C44E55C00C3C02D /* openai.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = openai.swift; path = ../openai.swift; sourceTree = "<group>"; };
 		FDAF596F2C44E61B00C3C02D /* test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = test.swift; sourceTree = "<group>"; };
 		FDAF59712C4567E400C3C02D /* selectplot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = selectplot.swift; sourceTree = "<group>"; };
+		FDB7838F2CCE91980011ADAC /* word.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = word.json; sourceTree = "<group>"; };
 		FDC310662C56459C00C26913 /* bodydetaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = bodydetaction.swift; sourceTree = "<group>"; };
 		FDC39C1E2C79AD1F00D6E3C5 /* selectplots.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = selectplots.swift; sourceTree = "<group>"; };
 		FDC6CF3C2C4D16B100EE8460 /* Readview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Readview.swift; sourceTree = "<group>"; };
@@ -97,7 +98,6 @@
 		FDF026FB2C92C6E0002D5AF1 /* Animation - 1726121039757.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "Animation - 1726121039757.json"; sourceTree = "<group>"; };
 		FDF026FF2C92CF2B002D5AF1 /* Animation - 1726122467044.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "Animation - 1726122467044.json"; sourceTree = "<group>"; };
 		FDFDA4072CCE378A0007AA78 /* children.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = children.json; sourceTree = "<group>"; };
-		FDFDA4092CCE777B0007AA78 /* words.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = words.json; sourceTree = "<group>"; };
 		FDFF4D8A2C76E39C0057A150 /* ImageGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageGenerator.swift; sourceTree = "<group>"; };
 		FDFF4D8D2C76FAE10057A150 /* imageTestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = imageTestView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -121,10 +121,10 @@
 				FDF026F72C92C4AE002D5AF1 /* fzfs.TTF */,
 				FDF026F52C92C4A3002D5AF1 /* fzmw.ttf */,
 				FDF026FF2C92CF2B002D5AF1 /* Animation - 1726122467044.json */,
+				FDB7838F2CCE91980011ADAC /* word.json */,
 				FDFDA4072CCE378A0007AA78 /* children.json */,
 				FDF026FB2C92C6E0002D5AF1 /* Animation - 1726121039757.json */,
 				FDF026F92C92C6E0002D5AF1 /* Animation - 1726121308557 (1).json */,
-				FDFDA4092CCE777B0007AA78 /* words.json */,
 				FDF026FA2C92C6E0002D5AF1 /* Animation - 1726121455984.json */,
 				FD9CABD72C8F5CDE009C3581 /* c7ppLY7oex.json */,
 				FD8DF1052C436FA00068FB3C /* creat */,
@@ -275,13 +275,13 @@
 				FDF026FD2C92C6E0002D5AF1 /* Animation - 1726121455984.json in Resources */,
 				FD86F4A12C42B8F400C9CDA4 /* Preview Assets.xcassets in Resources */,
 				FDF026F62C92C4A3002D5AF1 /* fzmw.ttf in Resources */,
-				FDFDA40A2CCE777B0007AA78 /* words.json in Resources */,
 				FDF027002C92CF2C002D5AF1 /* Animation - 1726122467044.json in Resources */,
 				FDFDA4082CCE378A0007AA78 /* children.json in Resources */,
 				FD20BD8E2C833A940083CBDB /* Localizable.strings in Resources */,
 				FDF026FE2C92C6E0002D5AF1 /* Animation - 1726121039757.json in Resources */,
 				FDF026FC2C92C6E0002D5AF1 /* Animation - 1726121308557 (1).json in Resources */,
 				FD86F49E2C42B8F400C9CDA4 /* Assets.xcassets in Resources */,
+				FDB783902CCE91980011ADAC /* word.json in Resources */,
 				FD031CA42C85886800C6CDF6 /* buildiOSFramework.sh in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

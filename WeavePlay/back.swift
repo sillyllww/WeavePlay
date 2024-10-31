@@ -9,19 +9,22 @@ import SwiftUI
 //返回
 struct CustomBackButton: View {
     @Environment(\.presentationMode) var presentationMode
+    var color: Color = .white // 设置默认颜色为白色
+
     var body: some View {
         Button(action: {
             presentationMode.wrappedValue.dismiss()
         }) {
             HStack {
                 Image(systemName: "chevron.backward")
-                    .foregroundColor(.white)
+                    .foregroundColor(color) // 使用传入的颜色（默认为白色）
                     .font(.system(size: 20))
                     .shadow(radius: 10)
             }
         }
     }
 }
+
 //按钮
 struct RoundedButton: View {
     var title: String

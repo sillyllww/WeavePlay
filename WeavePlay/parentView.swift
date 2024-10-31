@@ -105,6 +105,18 @@ struct MinutePickerView: View {
                            VStack {
                                Spacer(minLength: 10)
                                HStack {
+                                   Text(NSLocalizedString("Hello,小明家长", comment: "开头页面"))
+                                       .font(.title3)
+                                       .foregroundStyle(Color.white)
+                                       .bold()
+                                       .shadow(radius: 5)
+                                   Spacer()
+                               }
+                               .padding(.horizontal, 20)
+                               .padding(.bottom,3)
+                               
+                               
+                               HStack {
                                    Text("欢迎来到WeavePlay")
                                        .font(.title)
                                        .foregroundStyle(Color.white)
@@ -113,51 +125,54 @@ struct MinutePickerView: View {
                                    Spacer()
                                }
                                .padding(.horizontal, 20)
-                               .padding(.bottom)
                                
-                               HStack {
-                                   Text(NSLocalizedString("来为您的孩子创建一个故事吧", comment: "开头页面"))
-                                       .font(.title2)
-                                       .foregroundStyle(Color.white)
-                                       .bold()
-                                       .shadow(radius: 5)
-                                   Spacer()
-                               }
-                               .padding(.horizontal, 20)
+                               
+
                                
                                ZStack {
                                    LottieView(animationName: "children", loopMode: .playOnce, animationSpeed: 0.5)
                                        .scaleEffect(2.3)
                                    if globalSettings.textPositions.isEmpty{
-                                       LottieView(animationName: "words", loopMode: .loop, animationSpeed: 0.5)
+                                       LottieView(animationName: "word", loopMode: .loop, animationSpeed: 0.5)
                                            .scaleEffect(1.9)
                                            .offset(y:-40)
                                    }
 
-                                   ZStack{
-                                       ForEach(globalSettings.textPositions) { item in
-                                           HStack {
-                                               Button(action: {
-                                                   deleteText(item)
-                                               }) {
-                                                   Image(systemName: "trash")
-                                                       .foregroundColor(.red)
-                                               }
-                                               .padding(12)
-                                               Text(item.text)
-                                                   .padding(.trailing)
-                                               
-                                           }
-                                           .frame(height: 30, alignment: .leading)
-                                           .background(Color.white)
-                                           .opacity(0.8)
-                                           .cornerRadius(30)
-                                           .position(item.position.cgPoint)
-                                       }
-                                   }
+                                        ZStack{
+                                            ForEach(globalSettings.textPositions.indices, id: \.self) { index in
+                                                let item = globalSettings.textPositions[index]
+                                                
+                                                HStack {
+                                                    Button(action: {
+                                                        deleteText(item)
+                                                    }) {
+                                                        Image(systemName: "trash")
+                                                            .foregroundColor(.main)
+                                                    }
+                                                    .padding(.vertical, 12)
+                                                    .padding(.leading, 9)
+                                                    
+                                                    Text(item.text)
+                                                        .foregroundStyle(Color.main)
+                                                        .fontWeight(.bold)
+                                                        .padding(.trailing)
+                                                }
+                                                .frame(height: 40, alignment: .leading)
+                                                .background(Color.white)
+                                                .opacity(0.8)
+                                                .cornerRadius(30)
+                                                .position(item.position.cgPoint)
+                                                .gesture(
+                                                    DragGesture()
+                                                        .onChanged { value in
+                                                            updatePosition(of: index, to: value.location)
+                                                        }
+                                                )
+                                            }                                   }
        
                                }
-                               .frame(width: geometry.size.width < 768 ? geometry.size.width*0.65 : 400, height: geometry.size.height < 768 ?  geometry.size.width*0.65 : 400)
+                               .frame(width: geometry.size.width < 768 ? geometry.size.width*0.65 : 400, height: geometry.size.width*0.88)
+                               .offset(y:-10)
                            }
                            
                            HStack {
@@ -169,6 +184,7 @@ struct MinutePickerView: View {
                                    .font(.system(size: 18, weight: .medium, design: .rounded))
                                    .foregroundColor(.black)
                                    .contentShape(Rectangle()) // 确保点击区域
+                                
                             
 
                                Button(action: addText) {
@@ -182,6 +198,8 @@ struct MinutePickerView: View {
                            }
                            .padding(.horizontal)
                            .padding(.bottom)
+                           
+                           
                            HStack {
                                Text(NSLocalizedString("已创建的故事", comment: "开头页面"))
                                    .font(.title3)
@@ -198,8 +216,7 @@ struct MinutePickerView: View {
                                    StoryItemView(story: story, selectedStory: $selectedStory, navigateToSelectMan: $navigateToSelectMan, intoreadview: $intoreadview, stories: $stories, tosdView: $tosdView)
                                }
                            }
-                           Spacer(minLength: 200)
-                               .background(Color.black)
+ 
                        }
                        
 //                       if stories.stories.isEmpty {
@@ -357,6 +374,14 @@ struct MinutePickerView: View {
 
         }
     }
+    func updatePosition(of index: Int, to location: CGPoint) {
+        let codablePoint = CodablePoint(location)  // 使用构造函数
+        globalSettings.textPositions[index].position = codablePoint
+        globalSettings.saveTextPositions()  // 保存更改
+    }
+
+
+    
 
     func addText() {
         guard !inputText.isEmpty else { return }
@@ -568,21 +593,19 @@ struct StoryItemView: View {
         VStack{
             ZStack{
                 if let uiImage = uiImage {
-                        Button(action: {
-                            // 更新选中的 story
-                            selectedStory = story
-                        }) {
                             Image(uiImage: uiImage)
                                 .resizable()
                                 .scaledToFill()
+                                .offset(y: selectedStory?.id == story.id ? 30 : 140)
                                 .frame(width: selectedStory?.id == story.id ? 160 : UIScreen.main.bounds.width - 20,
-                                       height: selectedStory?.id == story.id ? 200 : 150)
+                                       height: selectedStory?.id == story.id ? 190 : 150)
                                 .scaleEffect(1.3) // 放大图像
+                                
                                 .background(Color.main)
                                 .clipped() // 裁剪超出部分
                                 .cornerRadius(20)
-                                .padding(.trailing, selectedStory?.id == story.id ? 180 : 0)
-                        }
+                                .padding(.trailing, selectedStory?.id == story.id ? 200 : 0)
+                                
                     } else {
                         Text("加载中...")
                     }
@@ -615,11 +638,13 @@ struct StoryItemView: View {
                     .opacity(0.8)
                     .multilineTextAlignment(.leading)
                 Text(story.storyintro)
-                    .frame(width: selectedStory?.id == story.id ? 170 : 250,height: selectedStory?.id == story.id ? 130:60, alignment: .topLeading)
-                    .foregroundColor(selectedStory?.id == story.id ? .black:.white)
+                    .frame(width: selectedStory?.id == story.id ? 170 : 250, height: selectedStory?.id == story.id ? 130 : 60, alignment: .topLeading)
+                    .foregroundColor(selectedStory?.id == story.id ? .black : .white)
                     .shadow(radius: 5)
                     .font(.subheadline)
                     .opacity(0.6)
+                    .multilineTextAlignment(.leading) // 设置左对齐
+
               }
             .padding(.bottom,selectedStory?.id == story.id ? -10 : 40)
             .padding(.trailing,selectedStory?.id == story.id ? -180 : 80)
@@ -719,6 +744,7 @@ struct StoryItemView: View {
         .cornerRadius(25)
         .animation(.easeInOut(duration: 0.3), value: selectedStory?.id)
     }
+    
     private func loadImage() {
  
         // 异步加载图片数据

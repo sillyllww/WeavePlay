@@ -65,11 +65,11 @@ struct CharacterDetailView: View {
                 }
                 Spacer()
             }
-            .padding()
+            .padding(.top,70)
             RoundedRectangle(cornerRadius: 50)
                 .fill(Color.white)
                 .frame(width: UIScreen.main.bounds.width, height: 770)
-                .offset(x: 0, y: 220)
+                .offset(x: 0, y: 230)
                 .shadow(radius: 20)
             
             VStack {
@@ -368,13 +368,12 @@ struct CharacterDetailView: View {
         .navigationBarBackButtonHidden(true)
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
-                HStack{
-                    CustomBackButton()
-                   Spacer()
+                HStack {
+                    CustomBackButton(color: .black.opacity(0.8)) // 在特定界面上设置为黑色
+                    Spacer()
                     Text("角色详情")
                         .font(.title2)
-                        .foregroundColor(.gray.opacity(0.7))
-                        
+                        .foregroundColor(.black.opacity(0.8))
                 }
             }
            

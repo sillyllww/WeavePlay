@@ -70,7 +70,7 @@ struct Readview: View {
                                                // .font(.custom("FZFENSTXJW--GB1-0", size: 15))
                                                 .font(.custom("FZMWJW--GB1-0", size: 17))
                                                 .padding(.horizontal)
-                                                .frame(width: 150)
+                                                .frame(width: 160)
                                                 .padding(.top,5)
                                         }
                                         .frame(height: 170)
@@ -96,7 +96,7 @@ struct Readview: View {
                                         }
                                     }
                                 }
-                                .frame(width: 160, height: 250)
+                                .frame(width: 160, height: 260  )
                                 Spacer()
                     
                             }
@@ -270,6 +270,48 @@ struct CharacterDialogView: View {
                                 VStack {
                                     Spacer()
                                     HStack {
+                                        ZStack{
+                                            HStack{
+                                                Text(matchedPlot.characters[currentIndex])
+                                                    .font(.caption)
+                                                    .foregroundColor(Color.white)
+                                                    .padding(.horizontal,20)
+                                                    .padding(.vertical,4)
+                                                    .background(Color.main)
+                                                    .cornerRadius(20)
+                                                    .padding(.leading,30)
+                                                Spacer()
+                                                }
+
+
+                                            HStack{
+                                                Button(action: {
+    //                                                    let utterance = AVSpeechUtterance(string: matchedPlot.dialog[currentIndex])
+    //                                                    utterance.rate = AVSpeechUtteranceDefaultSpeechRate
+    //                                                    utterance.voice = AVSpeechSynthesisVoice(identifier: "com.apple.ttsbundle.siri_Yu-shu_zh-CN_compact")
+    //                                                    synthesizer.speak(utterance)
+                                                    if currentIndex == 0{
+                                                        playSound(1)
+                                                    }else{
+                                                        playSound(2)
+                                                    }
+                                                    
+                                                }) {
+                                                    Image("play_btn")
+                                                        .scaleEffect(1.3)
+
+                                                }
+                                                Spacer()
+                                            }
+   
+                                        }
+
+                                        Spacer()
+                                    }
+                                    .padding(.bottom,4)
+                                    .padding(.leading,1)
+                                    
+                                    HStack {
                                         VStack(alignment: .leading) {
                                             HStack {
                                                 Text(matchedPlot.dialog[currentIndex])
@@ -279,59 +321,40 @@ struct CharacterDialogView: View {
                                                     .frame(maxWidth: 300, maxHeight: 90)
                                                 
                                                 Spacer()
-                                                Button(action: {
-//                                                    let utterance = AVSpeechUtterance(string: matchedPlot.dialog[currentIndex])
-//                                                    utterance.rate = AVSpeechUtteranceDefaultSpeechRate
-//                                                    utterance.voice = AVSpeechSynthesisVoice(identifier: "com.apple.ttsbundle.siri_Yu-shu_zh-CN_compact")
-//                                                    synthesizer.speak(utterance)
-                                                    if currentIndex == 0{
-                                                        playSound(1)
-                                                    }else{
-                                                        playSound(2)
-                                                    }
-                                                    
-                                                }) {
-                                                    Image(systemName: "speaker.wave.2.fill")
-                                                        .foregroundColor(.main)
-                                                        .frame(width: 30, height: 30)
-                                                        .background(Color.light)
-                                                        .cornerRadius(15)
-                                                        .padding(.trailing)
-                                                }
+  
                                             }
                                         }
                                         .background(Color.white)
                                         .cornerRadius(23)
                                         .shadow(radius: 10)
                                         .opacity(0.8)
+                                        .overlay(
+                                            RoundedRectangle(cornerRadius: 23)
+                                                .stroke(Color.main, lineWidth: 2) // 设置边框颜色和宽度
+                                        )
                                         
                                         ZStack {
                                             Image(systemName: "triangle.fill")
                                                 .font(.system(size: 20))
-                                                .foregroundColor(.white)
+                                                .foregroundColor(.main)
                                                 .opacity(0.5)
                                                 .rotationEffect(.degrees(210))
                                             Image(systemName: "triangle")
                                                 .font(.system(size: 20))
-                                                .foregroundColor(.white)
+                                                .foregroundColor(.main)
                                                 .rotationEffect(.degrees(210))
                                         }
                                     }
-                                    HStack {
-                                        Text(matchedPlot.characters[currentIndex])
-                                            .font(.caption)
-                                            .padding(.horizontal)
-                                            .background(Color.white.opacity(0.5))
-                                            .cornerRadius(10)
-                                            .padding(.horizontal)
-                                        Spacer()
-                                    }
+                                   
                                 }
                                 .fixedSize(horizontal: true, vertical: true)
                                 .transition(.opacity)
                                 .padding(.leading)
-                                .padding(.trailing,-60)
+                                .padding(.trailing,-40)
+                                .offset(y:-40)
+                                .zIndex(1)
                             }
+                                
                             
                             Button(action: {
 //                                let utterance = AVSpeechUtterance(string: matchedPlot.dialog[currentIndex])
@@ -508,10 +531,12 @@ struct CharacterDialogView: View {
                                                     let value = nextPlot.isturn[0]
                                                     if value >= 1 {
                                                         showselect = true
+                                                        currentIndex = 0
                                                     }
-                                                } else {
+                                                }	 else {
                                                     if location[1] == 6 {
                                                         finished = true
+                                                        currentIndex = 0
                                                         DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
                                                             
                                                             finished = false
@@ -522,10 +547,12 @@ struct CharacterDialogView: View {
                                                     if location[1] == 2{
                                                         isshowpick = true
                                                         showpick = true
+                                                        currentIndex = 0
                                                     }
-                                                    if location[1] == 3{
+                                                    if location[1] == 4{
                                                         isshowshake = true
                                                         showshake = true
+                                                        currentIndex = 0
                                                     }
                                                     if !isshowpick && !isshowshake{
                                                         location[1] += 1
@@ -561,8 +588,18 @@ struct CharacterDialogView: View {
                     if showpick{
                         VStack{
                             Spacer()
-                            Text("请帮助主角收集画面中的蝴蝶")
-                                .padding(.bottom,30)
+                            ZStack{
+                                
+                                Image("read_tips")
+                                    .offset(x:-14    )
+                                    .scaleEffect(1.1)
+                                    .padding(.bottom,30)
+                                Text("请帮助主角收集画面中的蝴蝶")
+                                    .foregroundStyle(Color.white)
+                                    .font(.system(size: 13))
+                                    .padding(.bottom,20)
+                            }
+
                         }
                     }
                     if showshake{
@@ -590,11 +627,10 @@ struct CharacterDialogView: View {
                             Button(action: {
                             moveButtonToOrigin(index: index)
                             }) {
-                                Text("蝴蝶 \(index + 1)")
-                                    .padding()
-                                    .background(Color.blue)
-                                    .foregroundColor(.white)
-                                    .cornerRadius(10)
+                                Image("butterfly")
+            
+                                    .rotationEffect( Angle(degrees: Double.random(in: 0...360)))
+                                    .scaleEffect(Double.random(in: 0.8...1.2))
                             }
                             .position(x: buttonPositions[index].x, y: buttonPositions[index].y)
                         }
@@ -605,19 +641,13 @@ struct CharacterDialogView: View {
                                 .edgesIgnoringSafeArea(.all)
                             VStack{
                                 if location[1] == 2{
-                                    Text("成功帮主角收集蝴蝶✌️")
-                                        .font(.title2)
-                                        .foregroundStyle(Color.white)
+                                    Image("read_collect")
                                 }else{
                                     Text("成功帮主角脱困")
                                         .font(.title2)
                                         .foregroundStyle(Color.white)
                                 }
                             }
-                            .frame(width: 500,height: 200)
-                            .background(.white)
-                            .opacity(0.7)
-                            .cornerRadius(50)
                             LottieView(animationName: "Animation - 1726121039757", loopMode: .loop, animationSpeed: 0.5)
                                 .offset(x:70)
                         }
