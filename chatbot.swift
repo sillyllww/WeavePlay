@@ -31,7 +31,7 @@ class ChatBot: ObservableObject {
             
             do {
                 let resp = try await self.openAIServer.getAnswer(messagesBody: httpBodyData)
-               
+
                 guard let responsedJSON = try? JSONSerialization.jsonObject(with: resp.data(using: .utf8)!) as? [String: Any] else {
                     await MainActor.run {
                         self.generating = false
@@ -41,21 +41,23 @@ class ChatBot: ObservableObject {
                 }
                 
                 guard let choice = (responsedJSON["choices"] as? [[String: Any]])?.first,
-                      let message = choice["message"] as? [String: String],
-                      var content = message["content"] else {
+                      let message = choice["message"] as? [String: Any],
+                      var content = message["content"] as? String else {
+                
                     await MainActor.run {
                         self.generating = false
                         completion(.failure(NSError(domain: "MessageError", code: -1, userInfo: nil)))
                     }
                     return
                 }
+        
                 
                 while content.hasPrefix("\n") {
                     content = String(content[content.index(after: content.startIndex)...])
                 }
                 
                 let finalContent = content
-                
+               
                 await MainActor.run {
                     self.nowgen = finalContent
                     self.generating = false

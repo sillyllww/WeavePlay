@@ -603,11 +603,7 @@ struct CharacterDialogView: View {
                         }
                     }
                     if showshake{
-                        VStack{
-                            Spacer()
-                            Text("请晃动手机帮主角脱困")
-                                .padding(.bottom,30)
-                        }
+                        Image("read_shake")
                         if shakeDetector.isShaken {
                             Text("Device shaken!")
                                 .onAppear(){

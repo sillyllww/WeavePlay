@@ -19,6 +19,9 @@ struct HomeView: View {
     @State private var showparentview = false
     @State private var height = UIScreen.main.bounds.height
     @State private var width = UIScreen.main.bounds.width
+    @State private var showchildrendetails = false
+    @State private var showchildrenlevels = false
+    @State private var showchildrenmedal = false
     var body: some View {
         NavigationStack {
             GeometryReader { geometry in
@@ -58,7 +61,11 @@ struct HomeView: View {
                                         .offset(x:0,y: -8)
                                     HStack{
                                         ZStack{
-                                            Image("bear_level")
+                                            Button(action: {
+                                                showchildrendetails = true
+                                            }) {
+                                                Image("bear_level")
+                                            }
                                             Text("我的等级")
                                                 .font(.caption)
                                                 .offset(x:0,y: 18)
@@ -340,6 +347,61 @@ struct HomeView: View {
 //                                }
 //                            }
 //                        }
+                    }
+                    if showchildrendetails{
+                        Color.black.opacity(0.5) // 背景变暗
+                            .edgesIgnoringSafeArea(.all)
+                            .onTapGesture {
+                                showchildrendetails = false
+                            }
+                        HStack{
+                            ZStack{
+                                Image("child_nature")
+                                    .scaleEffect(0.93)
+                                    .shadow(radius: 30)
+                                VStack{
+                                    Spacer()
+                                    HStack{
+                                        
+                                        Button(action: {
+                                            showchildrenlevels.toggle()
+                                            showchildrenmedal = false
+                                        }) {
+                                            Image(!showchildrenlevels ? "level_btn":"level_btn_fill")
+                                        }
+                                        Button(action: {
+                                            showchildrenmedal.toggle()
+                                            showchildrenlevels = false
+                                        }) {
+                                            Image(!showchildrenmedal ? "medal_btn":"medal_btn_fill")
+                                        }
+                                    }
+                                    .padding(.top,180)
+                                    Spacer()
+                                }
+
+    
+                            }
+                            if showchildrenlevels{
+                                Image("child_nature_s")
+                                    .padding(.leading,-15)
+                                    .padding(.trailing,-60)
+                                
+                                Image("levels")
+                                    .scaleEffect(0.93)
+                                    .offset(y:16)
+                                    .shadow(radius: 30)
+                            }
+                            if showchildrenmedal{
+                                Image("child_nature_s")
+                                    .padding(.leading,-15                                           )
+                                    .padding(.trailing,-60)
+                                Image("medal")
+                                    .scaleEffect(0.93)
+                                    .offset(y:16)
+                                    .shadow(radius: 30)
+                            }
+                        }
                     }
                 }
                 .navigationDestination(isPresented: $navigateToSelectMan) {
