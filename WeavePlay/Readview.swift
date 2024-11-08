@@ -230,6 +230,7 @@ struct Readview: View {
         }
         
     }
+
     func playSound(_ option: Int) {
         let urlString: String
         
@@ -535,6 +536,7 @@ struct CharacterDialogView: View {
                         HStack {
                             if location[1] != 1 {
                                 Button(action: {
+                                    playbutton()
                                     if currentIndex == 0 {
                                         location[1] -= 1
                                         currentIndex = 0
@@ -550,6 +552,7 @@ struct CharacterDialogView: View {
                             Spacer()
                             if !showshake && !showpick {
                                 Button(action: {
+                                    playbutton()
                                     showDetails = false
                                     showImage = false
                                     if let matchedPlot = selectedStory?.plots.plots.first(where: { $0.location == location }) {
@@ -691,6 +694,20 @@ struct CharacterDialogView: View {
             }
         }
     }
+    func playbutton() {
+        // 指定音频 URL
+        if let url = URL(string: "https://fc-sd-62aafe39g.oss-cn-hangzhou.aliyuncs.com/audio/330026__nanashi__bookwoodenfloor04.wav") {
+            player = AVPlayer(url: url)
+            
+            // 设置音量大小，范围为 0.0 到 1.0
+            player?.volume = 0.5  // 设置音量为 50%
+
+            // 开始播放音频
+            player?.play()
+        } else {
+            print("音频 URL 无效")
+        }
+    }
     func resetValues() {
         buttonPositions = [
             (400, 80), (480, 180), (150, 220), (370, 200), (100, 120)
@@ -781,7 +798,7 @@ class AudioPlayer: ObservableObject {
             player = AVPlayer(playerItem: playerItem)
             
             // 设置音量
-            player?.volume = 0.5  // 设置音量为 50%
+            player?.volume = 0.2  // 设置音量为 50%
 
             // 添加循环播放的通知监听
             NotificationCenter.default.addObserver(
