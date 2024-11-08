@@ -24,6 +24,8 @@ struct Readview: View {
     @State private var height = UIScreen.main.bounds.width
     @State private var finished: Bool = false
     @State private var showDetails = false
+    @State private var player: AVPlayer?
+    @StateObject private var audioPlayer = AudioPlayer()
     let synthesizer = AVSpeechSynthesizer()
     var body: some View {
         ZStack {
@@ -81,10 +83,12 @@ struct Readview: View {
                                             Spacer()
                                             
                                             Button(action: {
-                                                let utterance = AVSpeechUtterance(string: matchedPlot.storyText)
-                                                utterance.rate = AVSpeechUtteranceDefaultSpeechRate
-                                                utterance.voice = AVSpeechSynthesisVoice(identifier: "com.apple.ttsbundle.siri_Yu-shu_zh-CN_compact")
-                                                synthesizer.speak(utterance)
+//                                                let utterance = AVSpeechUtterance(string: matchedPlot.storyText)
+//                                                utterance.rate = AVSpeechUtteranceDefaultSpeechRate
+//                                                utterance.voice = AVSpeechSynthesisVoice(identifier: "com.apple.ttsbundle.siri_Yu-shu_zh-CN_compact")
+//                                                synthesizer.speak(utterance)
+                                                playSound(3)
+                                                
                                             }) {
                                                 Image(systemName: "speaker.wave.2.fill")
                                                     .foregroundColor(.main)
@@ -197,6 +201,11 @@ struct Readview: View {
                         windowScene.windows.first?.rootViewController?.setNeedsUpdateOfSupportedInterfaceOrientations()
                     }
                     resetValues()
+                    audioPlayer.play()
+                    
+                }
+                .onDisappear {
+                    audioPlayer.stop()  // 视图消失时停止音频
                 }
             }
             .tabViewStyle(PageTabViewStyle())
@@ -221,6 +230,25 @@ struct Readview: View {
         }
         
     }
+    func playSound(_ option: Int) {
+        let urlString: String
+        
+        switch option {
+        case 1:
+            urlString = "https://fc-sd-62aafe39g.oss-cn-hangzhou.aliyuncs.com/audio/\(location[0])-\(location[1])-1.mp3"
+        case 2:
+            urlString = "https://fc-sd-62aafe39g.oss-cn-hangzhou.aliyuncs.com/audio/\(location[0])-\(location[1])-2.mp3"
+        case 3:
+            urlString = "https://fc-sd-62aafe39g.oss-cn-hangzhou.aliyuncs.com/audio/\(location[0])-\(location[1]).mp3"
+        default:
+            return
+        }
+        
+        guard let url = URL(string: urlString) else { return }
+        player = AVPlayer(url: url)
+        player?.play()
+    }
+
     func resetValues() {
         location = [1, 1]
         startdialog = false
@@ -318,7 +346,7 @@ struct CharacterDialogView: View {
                                                     .font(.custom("FZMWJW--GB1-0", size: 20))
                                                     .padding(.leading)
                                                     .padding(.vertical, 10)
-                                                    .frame(maxWidth: 300, maxHeight: 90)
+                                                    .frame(maxWidth: 345, maxHeight: 140)
                                                 
                                                 Spacer()
   
@@ -444,7 +472,7 @@ struct CharacterDialogView: View {
        
                             VStack {
                                 HStack {
-                                    Text("公主接下来要去哪里呢")
+                                    Text("诺亚和艾米莉该怎么做")
                                         .font(.system(size: 15))
                                         .foregroundStyle(Color.main)
                                         .fontWeight(.bold)
@@ -464,7 +492,7 @@ struct CharacterDialogView: View {
                                                            .mask(RoundedRectangle(cornerRadius: 50).fill(Color.black)) // 仅在内部区域应用阴影
                                                    )
                                                    .shadow(color: Color.black.opacity(0.3), radius: 10, x: 0, y: 0) // 外部阴影
-                                        Text("去城堡")
+                                        Text("对抗黑影")
                                             .font(.caption)
                                             .fontWeight(.bold)
                                             .foregroundColor(Color.white)
@@ -492,7 +520,7 @@ struct CharacterDialogView: View {
                                                            .mask(RoundedRectangle(cornerRadius: 50).fill(Color.black)) // 仅在内部区域应用阴影
                                                    )
                                                    .shadow(color: Color.black.opacity(0.3), radius: 10, x: 0, y: 0) // 外部阴影
-                                        Text("去森林")
+                                        Text("感化黑影")
                                             .font(.caption)
                                             .fontWeight(.bold)
                                             .foregroundColor(Color.white)
@@ -535,21 +563,14 @@ struct CharacterDialogView: View {
                                                     }
                                                 }	 else {
                                                     if location[1] == 6 {
-                                                        finished = true
-                                                        currentIndex = 0
-                                                        DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
-                                                            
-                                                            finished = false
-                                                            location = [1,1]
-                                                            backTOchildren = true
-                                                        }
+
                                                     }
-                                                    if location[1] == 2{
+                                                    if location[1] == 4{
                                                         isshowpick = true
                                                         showpick = true
                                                         currentIndex = 0
                                                     }
-                                                    if location[1] == 4{
+                                                    if location[1] == 5{
                                                         isshowshake = true
                                                         showshake = true
                                                         currentIndex = 0
@@ -564,13 +585,18 @@ struct CharacterDialogView: View {
                                                 currentIndex = (currentIndex + 1) % matchedPlot.characters.count
                                             }
                                         } else {
-                                            finished = true
-                                            DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
-                                                
-                                                finished = false
-                                                location = [1,1]
-                                                backTOchildren = true
+                                            currentIndex += 1
+                                            if currentIndex == 2{
+                                                finished = true
+                                                currentIndex = 0
+                                                DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
+                                                    
+                                                    finished = false
+                                                    location = [1,1]
+                                                    backTOchildren = true
+                                                }
                                             }
+                     
                                         }
                                     }
                                     withAnimation(.easeInOut(duration: 3.0)) {
@@ -636,12 +662,11 @@ struct CharacterDialogView: View {
                             Color.black.opacity(0.5) // 背景变暗
                                 .edgesIgnoringSafeArea(.all)
                             VStack{
-                                if location[1] == 2{
+                                if location[1] == 4{
                                     Image("read_collect")
                                 }else{
-                                    Text("成功帮主角脱困")
-                                        .font(.title2)
-                                        .foregroundStyle(Color.white)
+                                    Image("read_shaked")
+                                        .scaleEffect(0.8)
                                 }
                             }
                             LottieView(animationName: "Animation - 1726121039757", loopMode: .loop, animationSpeed: 0.5)
@@ -698,9 +723,11 @@ struct CharacterDialogView: View {
         
         switch option {
         case 1:
-            urlString = "https://fc-sd-62aafe39g.oss-cn-hangzhou.aliyuncs.com/audio/1-1-1.mp3"
+            urlString = "https://fc-sd-62aafe39g.oss-cn-hangzhou.aliyuncs.com/audio/\(location[0])-\(location[1])-1.mp3"
         case 2:
-            urlString = "https://fc-sd-62aafe39g.oss-cn-hangzhou.aliyuncs.com/audio/1-1-2.mp3"
+            urlString = "https://fc-sd-62aafe39g.oss-cn-hangzhou.aliyuncs.com/audio/\(location[0])-\(location[1])-2.mp3"
+        case 3:
+            urlString = "https://fc-sd-62aafe39g.oss-cn-hangzhou.aliyuncs.com/audio/\(location[0])-\(location[1]).mp3"
         default:
             return
         }
@@ -738,4 +765,50 @@ extension View {
 
 #Preview {
     Readview(selectedStory: .constant(Story(id: UUID(), title: "示例故事", characters: Characters(), scene: "",plots: Plots(plots: [Plot(storyText: "这是故事的简介，这是故事的简介，这是故事的简介，这是故事的简介，这是故事的简介，这是故事的简介，这是故事的简介，这是故事的简介，这是故事的简介，这是故事的简介，这是故事的简介，这是故事的简介，这是故事的简介", imageUrl: URL(string: "https://th.bing.com/th/id/R.d07816d313cad5d2b53b30192443c4c5?rik=SUozltQgAs8%2bNQ&riu=http%3a%2f%2fn.sinaimg.cn%2fsinacn10119%2f600%2fw1920h1080%2f20190325%2f6449-hutwezf3366892.jpg&ehk=DH2hT8Ey9e3gfn%2fUBKrQFjRb3LPXUs9sEIOq4LRDZfQ%3d&risl=&pid=ImgRaw&r=0")!, characterUrls: [], characters: ["公主","王子"], location: [1,1], dialog: ["这是故事内容，这是故事内容，这是故事内容，这是故事内容，这是故事内容，这是故事内容，这是故事内容，这是故事内容，这是故事内容，这是故事内容，这是故事内容，这是故事内容，这是故事内容，这是故事内容，这是故事内容，","这是故事内容，这是故事内容，这是故事内容，这是故事内容，这是故事内容，这是故事内容，这是故事内容，这是故事内容，这是故事内容，这是故事内容，这是故事内容，这是故事内容，这是故事内容，这是故事内容，这是故事内容，"], isturn: [], turninfo: [], plotchose: [], plotchoseindex: 1, promotechara: [], promote: "")]) , plot1:"", plot2: "", plot3: "", topic: [], storyintro: "", storyimage: [],  finished: false,allcharacterUrls:[URL(string: "https://png.pngtree.com/png-clipart/20230221/original/pngtree-beautiful-girl-png-image_8961324.png")!,URL(string: "https://img.shetu66.com/2023/06/19/1687143044235244.png")!], allcharacters: ["公主","王子"])), stories: .constant(Stories()))
+}
+
+
+class AudioPlayer: ObservableObject {
+    var player: AVPlayer?
+
+    init() {
+        setupAudioPlayer()
+    }
+    
+    func setupAudioPlayer() {
+        if let url = URL(string: "https://fc-sd-62aafe39g.oss-cn-hangzhou.aliyuncs.com/audio/Goldmund%20-%20The%20Wind%20Sings.mp3") {
+            let playerItem = AVPlayerItem(url: url)
+            player = AVPlayer(playerItem: playerItem)
+            
+            // 设置音量
+            player?.volume = 0.5  // 设置音量为 50%
+
+            // 添加循环播放的通知监听
+            NotificationCenter.default.addObserver(
+                self,
+                selector: #selector(audioDidFinishPlaying),
+                name: .AVPlayerItemDidPlayToEndTime,
+                object: playerItem
+            )
+        }
+    }
+
+    func play() {
+        player?.play()
+    }
+    
+    func stop() {
+        player?.pause()
+    }
+
+    @objc func audioDidFinishPlaying() {
+        // 音频结束时重新播放
+        player?.seek(to: .zero)
+        player?.play()
+    }
+    
+    deinit {
+        // 移除通知观察者
+        NotificationCenter.default.removeObserver(self)
+    }
 }

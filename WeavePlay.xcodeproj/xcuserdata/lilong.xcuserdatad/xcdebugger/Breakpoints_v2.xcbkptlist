@@ -14,8 +14,10 @@
             filePath = "WeavePlay/Readview.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "742"
-            endingLineNumber = "742">
+            startingLineNumber = "769"
+            endingLineNumber = "769"
+            landmarkName = "unknown"
+            landmarkType = "0">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -44,8 +46,8 @@
             filePath = "WeavePlay/Readview.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "233"
-            endingLineNumber = "233"
+            startingLineNumber = "261"
+            endingLineNumber = "261"
             landmarkName = "CharacterDialogView"
             landmarkType = "14">
          </BreakpointContent>
@@ -108,8 +110,8 @@
             filePath = "WeavePlay/Readview.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "561"
-            endingLineNumber = "561"
+            startingLineNumber = "582"
+            endingLineNumber = "582"
             landmarkName = "body"
             landmarkType = "24">
          </BreakpointContent>
